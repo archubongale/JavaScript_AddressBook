@@ -4,56 +4,85 @@ function Contact(firstName, lastName){
   this.addresses = [];
 }
 
+Contact.prototype.fullName = function() {
+  return this.firstName + " " + this.lastName;
+}
+
+function Address(street,city,state) {
+  this.street = street;
+  this.city = city;
+  this.state = state;
+}
+Address.prototype.fullAddress = function() {
+  return this.street + ", " + this.city + ", " + this.state;
+}
+
+
+function resetFields() {
+  $("input#new-first-name").val("");
+  $("input#new-last-name").val("");
+  $("input.new-street").val("");
+  $("input.new-city").val("");
+  $("input.new-state").val("");
+}
+
+function formAddress() {
+  $(".new-address").append('<div class="new-address">' +
+  '<div class="form-group">' +
+  '<label for="new-street">Street</label>'+
+  '<input type="text" class="form-control new-street">' +
+  '</div>' +
+  '<div class="form-group">' +
+  '<label for="new-city">City</label>' +
+  '<input type="text" class="form-control new-city">' +
+  '</div>' +
+  '<div class="form-group">' +
+  '<label for="new-state">State</label>' +
+  '<input type="text" class="form-control new-state">' +
+  '</div>' +
+  '</div>');
+}
+
 $(document).ready(function() {
 
-/* Form to add an additional address to a contact */
+  /* Form to add an additional address to a contact */
   $("#add-address").click(function() {
-      $(".new-address").append('<div class="new-address">' +
-                                  '<div class="form-group">' +
-                                  '<label for="new-street">Street</label>'+
-                                  '<input type="text" class="form-control new-street">' +
-                                  '</div>' +
-                                  '<div class="form-group">' +
-                                    '<label for="new-city">City</label>' +
-                                    '<input type="text" class="form-control new-city">' +
-                                  '</div>' +
-                                  '<div class="form-group">' +
-                                    '<label for="new-state">State</label>' +
-                                    '<input type="text" class="form-control new-state">' +
-                                   '</div>' +
-                                '</div>');
+    var addAdditionalAddress = new formAddress();
+
   });
 
-/* Form to add a contact */
+  /* Form to add a contact */
   $("form#new-contact").submit(function(event) {
     event.preventDefault();
 
     var inputtedFirstName = $("input#new-first-name").val();
     var inputtedLastName = $("input#new-last-name").val();
-    var newContact = { firstName: inputtedFirstName, lastName: inputtedLastName, addresses: [] };
+    // var newContact = { firstName: inputtedFirstName, lastName: inputtedLastName, addresses: [] };
+    var newContact = new Contact(inputtedFirstName, inputtedLastName);
 
     /* Add a contact's address */
-    $(".new-address").each(function() {
-      var inputtedStreet = $(this).find("input.new-street").val();
-      var inputtedCity = $(this).find("input.new-city").val();
-      var inputtedState = $(this).find("input.new-state").val();
-      var newAddress = { street: inputtedStreet, city: inputtedCity, state: inputtedState };
+  $(".new-address").each(function() {
+    var inputtedStreet = $(this).find("input.new-street").val();
+    var inputtedCity = $(this).find("input.new-city").val();
+    var inputtedState = $(this).find("input.new-state").val();
+    //var newAddress = { street: inputtedStreet, city: inputtedCity, state: inputtedState };
+    var newAddress = new Address( inputtedStreet, inputtedCity, inputtedState);
+    newContact.addresses.push(newAddress);
 
-      newContact.addresses.push(newAddress);
-    });
+  });
 
-    /* Hidden form to add a second address or update information */
-    $(".second-address").each(function() {
-      var inputtedStreet = $(this).find("input.new-street").val();
-      var inputtedCity = $(this).find("input.new-city").val();
-      var inputtedState = $(this).find("input.new-state").val();
-      var secondAddress = { street: inputtedStreet, city: inputtedCity, state: inputtedState };
-
+  /* Hidden form to add a second address or update information */
+  $(".second-address").each(function() {
+    var inputtedStreet = $(this).find("input.new-street").val();
+    var inputtedCity = $(this).find("input.new-city").val();
+    var inputtedState = $(this).find("input.new-state").val();
+    // var secondAddress = { street: inputtedStreet, city: inputtedCity, state: inputtedState };
+    var secondAddress = new Address(inputtedStreet, inputtedCity, inputtedState);
     newContact.addresses.push(secondAddress);
-    });
+  });
 
     /*Routing new contact information to web site*/
-    $("ul#contacts").append("<li><span class='contact'>" + newContact.firstName + "</span></li>");
+    $("ul#contacts").append("<li><span class='contact'>" + newContact.fullName() + "</span></li>");
 
 
     /* Show information for the contact that is clicked */
@@ -69,12 +98,7 @@ $(document).ready(function() {
       });
     });
 
-    /* Clears the form after the contact is added */
-    $("input#new-first-name").val("");
-    $("input#new-last-name").val("");
-    $("input.new-street").val("");
-    $("input.new-city").val("");
-    $("input.new-state").val("");
+    var Clear = new resetFields();
 
   });//closes form new-contact
 });
