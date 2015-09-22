@@ -41,3 +41,8 @@ h1 {
 .contact:hover {
   text-decoration: underline;
 }
+
+
+p {
+    color: green;
+  }

@@ -26,6 +26,11 @@ function resetFields() {
   $("input.new-state").val("");
 }
 
+function resetAddresses(){
+  $("div.new-address").not("div.new-address:nth-child(1)").remove();
+  //use class new-address, all additional classes will be deleted
+}
+
 function formAddress() {
   $(".new-address").append('<div class="new-address">' +
   '<div class="form-group">' +
@@ -98,7 +103,28 @@ $(document).ready(function() {
       });
     });
 
-    var Clear = new resetFields();
+
+    $( "p" )
+      .on( "mouseenter", function() {
+        $( this ).css({
+          "background-color": "yellow",
+          "font-weight": "bolder"
+        });
+      })
+      .on( "mouseleave", function() {
+        var styles = {
+          backgroundColor : "#ddd",
+          fontWeight: ""
+        };
+        $( this ).css( styles );
+      });
+
+      
+
+    var deleteAdditionalAddresses = new resetAddresses();
+    var clear = new resetFields();
+
+
 
   });//closes form new-contact
 });
