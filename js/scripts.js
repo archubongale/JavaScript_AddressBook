@@ -1,3 +1,9 @@
+function Contact(firstName, lastName){
+  this.firstName = firstName;
+  this.lastName = lastName;
+  this.addresses = [];
+}
+
 $(document).ready(function() {
 
 /* Form to add an additional address to a contact */
